@@ -1,4 +1,3 @@
-// src/main/java/com/jpmc/midascore/component/TransactionKafkaListener.java
 package com.jpmc.midascore.component;
 
 import com.jpmc.midascore.foundation.Transaction;
@@ -9,11 +8,19 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class TransactionKafkaListener {
-    
     private static final Logger logger = LoggerFactory.getLogger(TransactionKafkaListener.class);
+    private final DatabaseConduit databaseConduit;
+
+    public TransactionKafkaListener(DatabaseConduit databaseConduit) {
+        this.databaseConduit = databaseConduit;
+    }
 
     @KafkaListener(topics = "${general.kafka-topic}", groupId = "midas-core-consumer")
     public void receiveTransaction(Transaction transaction) {
-        logger.debug("Received transaction amount: {}", transaction.getAmount());
+        try {
+            databaseConduit.processTransaction(transaction);
+        } catch (Exception e) {
+            logger.error("Error processing transaction: {}", transaction, e);
+        }
     }
 }
