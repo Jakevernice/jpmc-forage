@@ -7,6 +7,7 @@ public class Transaction {
     private long senderId;
     private long recipientId;
     private float amount;
+    private float incentiveAmount;
 
     public Transaction() {
     }
@@ -15,6 +16,7 @@ public class Transaction {
         this.senderId = senderId;
         this.recipientId = recipientId;
         this.amount = amount;
+        this.incentiveAmount = 0;
     }
 
     public long getSenderId() {
@@ -41,8 +43,19 @@ public class Transaction {
         this.amount = amount;
     }
 
+    public float getIncentiveAmount() {
+        return incentiveAmount;
+    }
+
+    public void setIncentiveAmount(float incentiveAmount) {
+        this.incentiveAmount = incentiveAmount;
+    }
+
     @Override
     public String toString() {
-        return "Transaction {senderId=" + senderId + ", recipientId=" + recipientId + ", amount=" + amount + "}";
+        return "Transaction {senderId=" + senderId + 
+               ", recipientId=" + recipientId + 
+               ", amount=" + amount + 
+               ", incentiveAmount=" + incentiveAmount + "}";
     }
 }
